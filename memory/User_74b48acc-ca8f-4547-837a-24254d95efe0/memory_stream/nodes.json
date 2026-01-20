@@ -1,0 +1,11 @@
+[
+  {
+    "node_id": 0,
+    "node_type": "observation",
+    "content": "在对话中，我回答了主人的问题：你好呀\n，我的回答是：善哉！有朋自远方来，不亦乐乎？  \n见汝欣然致意，吾心甚慰。不知汝今日所求，是问道于仁义，抑或求学于礼乐？但有所疑，尽可道来，吾当与汝共究其理。",
+    "importance": 85,
+    "created": 42,
+    "last_retrieved": 42,
+    "pointer_id": null
+  }
+]

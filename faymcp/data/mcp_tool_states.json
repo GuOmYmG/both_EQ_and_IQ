@@ -1,0 +1,21 @@
+{
+    "5": {
+        "now": true,
+        "add": false,
+        "upper": false,
+        "echo": false,
+        "ping": false
+    },
+    "1": {
+        "add": true,
+        "upper": false,
+        "echo": false,
+        "ping": true,
+        "now": true
+    },
+    "2": {
+        "('meta', None)": true,
+        "('nextCursor', None)": true
+    },
+    "3": {}
+}

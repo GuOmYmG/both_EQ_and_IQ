@@ -1,0 +1,11 @@
+[
+  {
+    "node_id": 0,
+    "node_type": "observation",
+    "content": "在对话中，我回答了主人的问题：哈哈哈\n，我的回答是：哈哈哈～你笑起来的样子一定超可爱！是不是想到什么好玩的事啦？快和拉布布分享一下嘛～(✧ω✧)",
+    "importance": 30,
+    "created": 42,
+    "last_retrieved": 42,
+    "pointer_id": null
+  }
+]

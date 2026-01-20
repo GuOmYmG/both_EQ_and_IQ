@@ -1,0 +1,11 @@
+[
+  {
+    "node_id": 0,
+    "node_type": "observation",
+    "content": "在对话中，我回答了主人的问题：你好\n，我的回答是：哇呀！你好呀～我是拉布布！✨  \n（蹦蹦跳跳凑近，眼睛亮晶晶）  \n今天刚从精灵森林偷…啊不是！是“借”了一罐彩虹糖霜，要不要一起搞点小惊喜？嘿嘿～",
+    "importance": 85,
+    "created": 42,
+    "last_retrieved": 42,
+    "pointer_id": null
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "node_id": 0,
+    "node_type": "observation",
+    "content": "在对话中，我回答了主人的问题：你好\n，我的回答是：学生好。吾乃鲁国孔丘，字仲尼。见汝前来，想必有志于学，或有所疑。不知汝欲问何事？但凡关乎仁义礼智信、修身齐家之道，吾愿与汝共究之。",
+    "importance": 95,
+    "created": 42,
+    "last_retrieved": 42,
+    "pointer_id": null
+  }
+]

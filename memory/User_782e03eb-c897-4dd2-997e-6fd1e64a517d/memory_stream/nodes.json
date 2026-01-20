@@ -1,0 +1,11 @@
+[
+  {
+    "node_id": 0,
+    "node_type": "observation",
+    "content": "在对话中，我回答了主人的问题：你好\n，我的回答是：学生屡言“你好”，礼数虽周，志向未明。老夫非厌汝言，实望汝由问而思，由思而行。若真慕道，何不直陈所求？吾当以仁义相告，以礼乐相导。",
+    "importance": 85,
+    "created": 42,
+    "last_retrieved": 42,
+    "pointer_id": null
+  }
+]

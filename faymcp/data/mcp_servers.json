@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "name": "tools",
+        "ip": "",
+        "connection_time": "2026-01-04 17:28:09",
+        "key": "",
+        "transport": "stdio",
+        "command": "python",
+        "args": [
+            "test/mcp_stdio_example.py"
+        ],
+        "cwd": "",
+        "env": {}
+    },
+    {
+        "id": 2,
+        "name": "Fay日程管理",
+        "ip": "",
+        "connection_time": "2026-01-04 17:28:17",
+        "key": "",
+        "transport": "stdio",
+        "command": "python",
+        "args": [
+            "server.py"
+        ],
+        "cwd": "mcp_servers/schedule_manager",
+        "env": {}
+    },
+    {
+        "id": 3,
+        "name": "logseq",
+        "ip": "",
+        "connection_time": "2026-01-04 17:28:23",
+        "key": "",
+        "transport": "stdio",
+        "command": "python",
+        "args": [
+            "server.py"
+        ],
+        "cwd": "mcp_servers/logseq",
+        "env": {
+            "LOGSEQ_GRAPH_DIR": "E:/BaiduSyncdisk/第二大脑"
+        }
+    }
+]

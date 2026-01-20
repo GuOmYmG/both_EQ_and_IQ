@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试纯净LLM API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .input-group { margin: 10px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin-top: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f9f9f9; }
+        .error { background: #ffe6e6; border-color: #ff9999; }
+        .success { background: #e6ffe6; border-color: #99ff99; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>测试纯净LLM API</h1>
+        
+        <div class="input-group">
+            <label for="message">消息内容:</label>
+            <textarea id="message" rows="3" placeholder="输入你想发送的消息...">你好，请简单介绍一下自己</textarea>
+        </div>
+        
+        <div class="input-group">
+            <button onclick="testAPI()">测试API</button>
+            <button onclick="clearResult()">清除结果</button>
+        </div>
+        
+        <div id="result" class="result" style="display: none;">
+            <h3>结果:</h3>
+            <div id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const message = document.getElementById('message').value.trim();
+            const resultDiv = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+            
+            if (!message) {
+                alert('请输入消息内容');
+                return;
+            }
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultContent.innerHTML = '正在调用API...';
+            
+            try {
+                const response = await fetch('/api/direct-llm', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    resultDiv.className = 'result success';
+                    resultContent.innerHTML = `
+                        <strong>✅ 成功!</strong><br>
+                        <strong>模型:</strong> ${data.model || '未知'}<br>
+                        <strong>回复:</strong><br>
+                        <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 4px;">
+                            ${data.reply || '无回复'}
+                        </div>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultContent.innerHTML = `
+                        <strong>❌ 失败!</strong><br>
+                        <strong>HTTP状态:</strong> ${response.status}<br>
+                        <strong>错误信息:</strong> ${data.error || '未知错误'}
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultContent.innerHTML = `
+                    <strong>❌ 网络错误!</strong><br>
+                    <strong>错误信息:</strong> ${error.message}<br>
+                    <strong>可能原因:</strong> 服务未启动或网络连接问题
+                `;
+            }
+        }
+        
+        function clearResult() {
+            document.getElementById('result').style.display = 'none';
+        }
+        
+        // 支持回车键发送
+        document.getElementById('message').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                testAPI();
+            }
+        });
+    </script>
+</body>
+</html>

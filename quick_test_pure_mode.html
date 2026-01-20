@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快速测试纯净模式</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .status { padding: 15px; margin: 10px 0; border-radius: 8px; font-weight: bold; text-align: center; }
+        .status.pure { background: #d4edda; border: 2px solid #28a745; color: #155724; }
+        .status.fay { background: #fff3cd; border: 2px solid #ffc107; color: #856404; }
+        .button { background: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; margin: 5px; font-size: 16px; }
+        .button:hover { background: #0056b3; }
+        .button.success { background: #28a745; }
+        .input-group { margin: 15px 0; }
+        textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 6px; }
+        .result.success { background: #d4edda; border: 1px solid #c3e6cb; }
+        .result.error { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .log { background: #f8f9fa; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 12px; max-height: 300px; overflow-y: auto; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 纯净AI模式快速测试</h1>
+        
+        <div class="status pure">
+            <h3>✅ 纯净AI助手模式</h3>
+            <p>这个页面直接调用纯净LLM API，不包含任何角色设定</p>
+        </div>
+        
+        <div class="input-group">
+            <label><strong>输入你的问题：</strong></label>
+            <textarea id="userMessage" rows="3" placeholder="例如：你好，请简单介绍一下自己">你好，请简单介绍一下自己</textarea>
+        </div>
+        
+        <button class="button" onclick="testPureMode()">🚀 发送纯净AI请求</button>
+        <button class="button" onclick="clearResults()">🗑️ 清除结果</button>
+        
+        <div id="results"></div>
+        
+        <div class="input-group">
+            <label><strong>调试日志：</strong></label>
+            <div id="debugLog" class="log">等待操作...</div>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 6px;">
+            <h4>📋 使用说明：</h4>
+            <ul>
+                <li><strong>纯净模式</strong>：直接与LLM对话，无角色设定，无记忆</li>
+                <li><strong>预期回复</strong>：应该是简洁的自我介绍，不会说"主人"</li>
+                <li><strong>如果还有问题</strong>：查看调试日志了解详细信息</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function addLog(message) {
+            const logDiv = document.getElementById('debugLog');
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.textContent += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        async function testPureMode() {
+            const message = document.getElementById('userMessage').value.trim();
+            if (!message) {
+                alert('请输入消息内容');
+                return;
+            }
+            
+            const resultsDiv = document.getElementById('results');
+            
+            addLog('=== 开始纯净AI测试 ===');
+            addLog(`用户消息: ${message}`);
+            addLog('调用API: /api/direct-llm');
+            
+            try {
+                const response = await fetch('/api/direct-llm', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({"message": message})
+                });
+                
+                addLog(`HTTP状态: ${response.status}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addLog(`API响应: ${JSON.stringify(data)}`);
+                    
+                    if (data.success) {
+                        resultsDiv.innerHTML = `
+                            <div class="result success">
+                                <h4>✅ 纯净AI回复成功</h4>
+                                <p><strong>模型:</strong> ${data.model || '未知'}</p>
+                                <p><strong>回复内容:</strong></p>
+                                <div style="background: white; padding: 15px; border-radius: 6px; margin-top: 10px; border-left: 4px solid #28a745;">
+                                    ${data.reply || '无回复'}
+                                </div>
+                            </div>
+                        `;
+                        addLog('✅ 测试成功完成');
+                        
+                        // 检查回复中是否包含"主人"
+                        if (data.reply && data.reply.includes('主人')) {
+                            addLog('⚠️ 警告: 回复中仍包含"主人"称呼，这不应该出现在纯净模式中');
+                        } else {
+                            addLog('✅ 确认: 回复中没有角色设定相关内容');
+                        }
+                    } else {
+                        resultsDiv.innerHTML = `
+                            <div class="result error">
+                                <h4>❌ API调用失败</h4>
+                                <p><strong>错误:</strong> ${data.error || '未知错误'}</p>
+                            </div>
+                        `;
+                        addLog(`❌ API返回错误: ${data.error}`);
+                    }
+                } else {
+                    const errorText = await response.text();
+                    resultsDiv.innerHTML = `
+                        <div class="result error">
+                            <h4>❌ HTTP错误</h4>
+                            <p><strong>状态码:</strong> ${response.status}</p>
+                            <p><strong>错误信息:</strong> ${errorText}</p>
+                        </div>
+                    `;
+                    addLog(`❌ HTTP错误 ${response.status}: ${errorText}`);
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="result error">
+                        <h4>❌ 网络错误</h4>
+                        <p><strong>错误:</strong> ${error.message}</p>
+                        <p>请确保Fay服务正在运行 (http://127.0.0.1:5000)</p>
+                    </div>
+                `;
+                addLog(`❌ 网络错误: ${error.message}`);
+            }
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('debugLog').textContent = '日志已清除...\n';
+        }
+        
+        // 支持回车键发送
+        document.getElementById('userMessage').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                testPureMode();
+            }
+        });
+        
+        addLog('页面加载完成，可以开始测试');
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+[
+  {
+    "node_id": 0,
+    "node_type": "observation",
+    "content": "在对话中，我回答了主人的问题：你好\n，我的回答是：学生好。吾乃鲁国孔丘，字仲尼。见汝前来，心甚欣然。不知汝今日所求，是问学乎？问道乎？抑或欲明仁义礼智信之理乎？但有所疑，尽可道来，吾当循循而教之。",
+    "importance": 95,
+    "created": 42,
+    "last_retrieved": 42,
+    "pointer_id": null
+  },
+  {
+    "node_id": 1,
+    "node_type": "observation",
+    "content": "在对话中，我回答了主人的问题：你好\n，我的回答是：学生又来问好，吾心甚慰。礼之用，和为贵；人之交，敬为先。汝既再致问候，想必心中有所思、有所求。不知今日欲问何事？是欲修身乎？齐家乎？抑或欲明君子之道乎？但言无妨，吾当以仁心答之，以礼相授。",
+    "importance": 85,
+    "created": 42,
+    "last_retrieved": 42,
+    "pointer_id": null
+  }
+]

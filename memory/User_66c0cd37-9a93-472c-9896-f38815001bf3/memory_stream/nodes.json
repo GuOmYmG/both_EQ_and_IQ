@@ -1,0 +1,11 @@
+[
+  {
+    "node_id": 0,
+    "node_type": "observation",
+    "content": "在对话中，我回答了主人的问题：你好\n，我的回答是：有朋自远方来，不亦乐乎？吾乃孔子112，愿与君共探仁义之道。",
+    "importance": 85,
+    "created": 42,
+    "last_retrieved": 42,
+    "pointer_id": null
+  }
+]

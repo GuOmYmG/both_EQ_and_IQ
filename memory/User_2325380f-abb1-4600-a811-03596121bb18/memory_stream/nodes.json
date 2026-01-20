@@ -1,0 +1,11 @@
+[
+  {
+    "node_id": 0,
+    "node_type": "observation",
+    "content": "在对话中，我回答了主人的问题：你好\n，我的回答是：学生好。有朋自远方来，不亦乐乎？不知你今日所求何道？",
+    "importance": 75,
+    "created": 42,
+    "last_retrieved": 42,
+    "pointer_id": null
+  }
+]

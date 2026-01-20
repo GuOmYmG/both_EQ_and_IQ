@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>纯净AI模式调试</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+<body>
+    <div id="app">
+        <h2>纯净AI模式调试工具</h2>
+        
+        <p>当前模式: <span v-if="pure_mode_enabled" style="color: red;">【纯净AI助手】</span><span v-else style="color: green;">【数字人角色】</span></p>
+        
+        <button @click="toggleMode()">切换模式</button>
+        
+        <div style="margin: 20px 0;">
+            <input v-model="testMessage" placeholder="输入测试消息" style="width: 300px; padding: 5px;">
+            <button @click="sendTest()">发送测试</button>
+        </div>
+        
+        <div style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;">
+            <div v-for="msg in messages" :key="msg.id" style="margin: 5px 0; padding: 5px; background: #f5f5f5;">
+                <strong>{{msg.type}}:</strong> {{msg.content}}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                pure_mode_enabled: false,
+                testMessage: '你好，这是测试消息',
+                messages: []
+            },
+            methods: {
+                toggleMode() {
+                    this.pure_mode_enabled = !this.pure_mode_enabled;
+                    this.addMessage('system', `已切换到${this.pure_mode_enabled ? '纯净AI助手' : '数字人角色'}模式`);
+                },
+                
+                sendTest() {
+                    if (!this.testMessage.trim()) {
+                        alert('请输入消息');
+                        return;
+                    }
+                    
+                    this.addMessage('user', this.testMessage);
+                    
+                    if (this.pure_mode_enabled) {
+                        this.sendPureMode();
+                    } else {
+                        this.addMessage('system', 'Fay模式测试（这里不实际调用）');
+                    }
+                },
+                
+                sendPureMode() {
+                    console.log('发送纯净AI请求:', this.testMessage);
+                    
+                    fetch('/api/direct-llm', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message: this.testMessage })
+                    })
+                    .then(response => {
+                        console.log('响应状态:', response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('响应数据:', data);
+                        if (data.success) {
+                            this.addMessage('assistant', data.reply);
+                        } else {
+                            this.addMessage('error', '错误: ' + (data.error || '未知错误'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('请求失败:', error);
+                        this.addMessage('error', '网络错误: ' + error.message);
+                    });
+                },
+                
+                addMessage(type, content) {
+                    this.messages.push({
+                        id: Date.now(),
+                        type: type,
+                        content: content
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
